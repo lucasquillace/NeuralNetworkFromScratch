@@ -10,7 +10,7 @@ class HiddenLayer : public Layer{
         using Layer::Layer;
         HiddenLayer(int nodes_number): Layer(nodes_number) {}
 
-        std::vector<float> find_node_values();
+        void update_node_values(std::vector<float>) override;
 
 };
 

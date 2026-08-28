@@ -1,5 +1,5 @@
 #include "HiddenLayer.hpp"
 
-std::vector<float> HiddenLayer::find_node_values(){
+void HiddenLayer::update_node_values(std::vector<float> new_values){
 
 }

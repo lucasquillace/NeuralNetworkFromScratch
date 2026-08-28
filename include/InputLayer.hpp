@@ -10,8 +10,9 @@ class InputLayer : public Layer{
     public:
         using Layer::Layer;
         InputLayer(int nodes_number): Layer(nodes_number) {}
+        
+        void update_node_values(std::vector<float> ) override;
 
-        std::vector<float> find_node_values() override;
 };
 
 #endif

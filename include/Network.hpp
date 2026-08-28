@@ -22,6 +22,11 @@ class Network{
         // per specificare il numero di layer, compreso quello di input ed i nodi necessari per layer
         Network(int, std::vector<int>);
 
+        // feed forward pass
+        void feed_forward();
+        
+        // return the value of the loss funcion
+        float cost();
 };
 
 #endif

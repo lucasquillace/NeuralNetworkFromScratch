@@ -11,7 +11,7 @@ class OutputLayer : public Layer{
         using Layer::Layer;
         OutputLayer(int nodes_number): Layer(nodes_number) {}
 
-        std::vector<float> find_node_values();
+        void update_node_values(std::vector<float>) override;
 
 };
 

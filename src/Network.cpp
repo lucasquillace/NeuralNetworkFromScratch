@@ -7,7 +7,7 @@
 #include "InputLayer.hpp"
 #include "OutputLayer.hpp"
 #include "HiddenLayer.hpp"
-#include "Weight.hpp"
+#include "Matrix.hpp"
 
 // Inizializza la rete
 Network::Network(int layer_number, std::vector<int> node_number){
@@ -27,11 +27,11 @@ Network::Network(int layer_number, std::vector<int> node_number){
     for (int i = 1; i < layer_number -1; i++){
         this->layers.push_back(std::make_unique<HiddenLayer>(node_number[i]));
 
-        this->weights.push_back(std::make_unique<Weight>(i, i-1));
+        this->weights.push_back(std::make_unique<Matrix>(i, i-1));
     }
     this->layers.push_back(std::make_unique<OutputLayer>(node_number[layer_number -1]));
 
-    this->weights.push_back(std::make_unique<Weight>(layer_number, layer_number -1));
+    this->weights.push_back(std::make_unique<Matrix>(layer_number, layer_number -1));
     
 }
 
@@ -44,7 +44,15 @@ Network::Network(){
     Network(DEFAULT_LAYER_NUMBER, node_number);
 }
 
+
+void Network::feed_forward(){
+    for (int index = 1; index < layers.size(); index++){
+        std::vector<float> previous_nodes = (this->layers[index-1].get())->getNodeValues();
+        
+    }
+}
+
 float Network::activation_function(float value) const{
-    // sigmoide di default
+    // sigmoide by default
     return 1/(1+ exp(-value));
 }

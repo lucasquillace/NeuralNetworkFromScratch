@@ -1,5 +1,5 @@
 #include "OutputLayer.hpp"
 
-std::vector<float> OutputLayer::find_node_values(){
-    return std::vector<float>();
+void OutputLayer::update_node_values(std::vector<float> new_values){
+    return;
 }

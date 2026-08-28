@@ -16,7 +16,7 @@ set(SOURCES
     src/Network.cpp
     src/Node.cpp
     src/OutputLayer.cpp
-    src/Weight.cpp
+    src/Matrix.cpp
     src/exs/main.cpp  
 )
 

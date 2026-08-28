@@ -1,5 +1,5 @@
 #include "InputLayer.hpp"
 
-std::vector<float> InputLayer::find_node_values(){
+void InputLayer::update_node_values(std::vector<float> init_values){
     
 }
