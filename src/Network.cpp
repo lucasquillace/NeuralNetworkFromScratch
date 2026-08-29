@@ -1,5 +1,5 @@
 
-#include <bits/stdc++.h>
+
 #include <memory>
 #include <iostream>
 
@@ -47,12 +47,18 @@ Network::Network(){
 
 void Network::feed_forward(){
     for (int index = 1; index < layers.size(); index++){
-        std::vector<float> previous_nodes = (this->layers[index-1].get())->getNodeValues();
+        std::unique_ptr<Matrix> previous_node_matrix = std::make_unique<Matrix>((this->layers[index-1].get())->getNodeValues());
+        std::unique_ptr<Matrix> next_node_matrix = Layer::matrixMultiplication(previous_node_matrix.get(), this->weights[index].get());
         
-    }
-}
+        std::vector<float> next_nodes_values;
 
-float Network::activation_function(float value) const{
-    // sigmoide by default
-    return 1/(1+ exp(-value));
+        // if some dimension errors occours, here it's the part of the code I have to look first
+        next_nodes_values.reserve(next_node_matrix->getColQuantity());
+        for (int i = 0; i< next_node_matrix->getColQuantity(); i++){
+            next_nodes_values.push_back(next_node_matrix->getValue(i));
+        }
+
+        // va immplementatoa
+        layers[index]->update_node_values(std::move(next_nodes_values));
+    }
 }
