@@ -15,3 +15,11 @@ void OutputLayer::update_node_values(std::vector<float> new_values){
         this->nodes[i].setValue(new_values[i]);
     }
 }
+
+// add the expected value to its cache. expected_values is synchronized with InputLayer.node_value_cached:
+// Hence the expected output ad InputLayer.nodes_value_cached[i] is expected_values[i]
+void OutputLayer::push_expected_value(float value){
+    std::vector<float> values(this->nodes.size(), 0);
+    values[value] = 1;
+    this->expected_values.push_back(std::move(values));
+}
