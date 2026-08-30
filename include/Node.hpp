@@ -10,8 +10,8 @@ class Node{
         float bias;
 
     public:
-        float getValue() {return value;};
-        float getBias() {return bias;};
+        float getValue() const {return value;};
+        float getBias() const {return bias;};
         void setValue(float v) {this->value = v;};
         void setBias(float b) {this->bias = b;};
 

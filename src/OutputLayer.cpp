@@ -16,10 +16,26 @@ void OutputLayer::update_node_values(std::vector<float> new_values){
     }
 }
 
-// add the expected value to its cache. expected_values is synchronized with InputLayer.node_value_cached:
-// Hence the expected output ad InputLayer.nodes_value_cached[i] is expected_values[i]
-void OutputLayer::push_expected_value(float value){
-    std::vector<float> values(this->nodes.size(), 0);
-    values[value] = 1;
-    this->expected_values.push_back(std::move(values));
+void OutputLayer::synch_expected_values(std::vector<float>&& values){
+    for(int i = 0; i< values.size(); i++){
+        std::vector<float> v(this->nodes.size(), 0);
+        v[values[i]] = 1;
+        this->expected_values.push_back(std::move(v));
+    }
+}
+
+void OutputLayer::synch_index(uint8_t* index_ptr){
+    this-> local_index_ptr = index_ptr;
+}
+
+void OutputLayer::clear_cached_values(){
+    this->expected_values.clear();
+}
+
+float OutputLayer::getExpectedNodeValueByPosition(int pos) const{
+    return this->expected_values[*local_index_ptr][pos];
+}
+
+float OutputLayer::getNodeValueByPosition(int pos) const{
+    return (this->nodes[pos]).getValue();
 }

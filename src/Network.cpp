@@ -1,5 +1,4 @@
-
-
+#include <cmath>
 #include <memory>
 #include <iostream>
 
@@ -60,4 +59,23 @@ void Network::feed_forward(){
 
         layers[index]->update_node_values(std::move(next_nodes_values));
     }
+}
+
+float Network::cost(){
+    // loss between OutputLayer.expected_values[*local_index_ptr] and this->...->nodes(.getValue())
+    Layer* last_layer = this->layers[this->layers.size()-1].get();
+    OutputLayer* outputLayer = dynamic_cast<OutputLayer*>(last_layer);
+    float total_cost = 0;
+    
+    for(int i = 0; outputLayer->getNodes().size() ; i++){
+        float predicted = outputLayer->getNodeValueByPosition(i);
+        float expected = outputLayer->getExpectedNodeValueByPosition(i);
+        total_cost += loss_function(expected, predicted);
+    }
+
+    return ( -(total_cost / outputLayer->getNodes().size()));
+}
+
+float Network::loss_function(float expected, float predicted) const{
+    return (expected* log (predicted) + ((1 - expected) * log (1 - predicted)));
 }

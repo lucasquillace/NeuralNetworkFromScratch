@@ -16,7 +16,7 @@ class Network{
         // weights[i] is the weight matrix between (i-1) and (i) layer
         std::vector<std::unique_ptr<Matrix>> weights;
 
-        float activation_function(float) const;
+        float loss_function(float, float) const;
 
     public:
         Network();
@@ -24,10 +24,7 @@ class Network{
         // per specificare il numero di layer, compreso quello di input ed i nodi necessari per layer
         Network(int, std::vector<int>);
 
-        // (maybe there's a better design choice but i don't want to create a shared_ptr)
-        std::unique_ptr<Matrix>* getWeights(int);
-        
-        // return the value of the loss funcion
+        // calculate the loss between the predicted values of the network and the expected ones
         float cost();
 
         // feed forward pass

@@ -14,6 +14,8 @@ InputLayer::InputLayer(int nodes_number) : Layer(nodes_number), local_index(0), 
 
 // load the information meaningful to the input layer and pass to the output layer the according expected results
 void InputLayer::cache_values(const std::vector<std::string>& buffer, OutputLayer* output_layer){
+    std::vector<float> expected_values;
+    
     for (int i = 0; i< buffer.size(); i++){
         std::stringstream ss(buffer[i]);
         std::string value;
@@ -24,17 +26,19 @@ void InputLayer::cache_values(const std::vector<std::string>& buffer, OutputLaye
         while (std::getline(ss, value, ',')){
             if (first){
                 first = false;
-                output_layer->push_expected_value(std::stof(value));
+                expected_values.push_back((std::stof(value)));
 
             }else{
                 values.push_back(std::stof(value));
             }
         }
 
+        // actually push the BATCH_SIZE expected_values and node_values_cached
         this->node_values_cached.push_back(std::move(values));
     }
-}
 
+    output_layer->synch_expected_values(std::move(expected_values));
+}
 
 void InputLayer::read_from_file(OutputLayer* output_layer){
     
@@ -48,7 +52,10 @@ void InputLayer::read_from_file(OutputLayer* output_layer){
         exit(0);
     }
     
+    this->node_values_cached.clear();
+    output_layer->clear_cached_values();
     this->local_index = 0;
+
     std::vector<std::string> buffer(BATCH_SIZE);
     uint8_t lines_read = 0;
     std::string line;
@@ -74,6 +81,12 @@ void InputLayer::read_from_file(OutputLayer* output_layer){
 
 // I guess it's good to maintain either load_... or update_... . Idk maybe it's used in 2 different scopes
 void InputLayer::load_next_training_values(OutputLayer* output_layer){
+
+    // to pass the local_index to the OutputLayer
+    if (this->byte_chunk_position == 0){
+        output_layer->synch_index(&(this->local_index));
+    }
+
     if ((local_index == node_values_cached.size()) || local_index == 0){
         if (this->byte_chunk_position == -1){
             std::cout << "Almost finished training data.";

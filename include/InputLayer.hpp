@@ -36,7 +36,7 @@ class InputLayer : public Layer{
         // update the node values (from file only if the cached ones are finished)
         void update_node_values(std::vector<float> ) override;
 
-        // loads the next training data to the nodes
+        // loads the next training data to the nodes (N.B.: call update_node_values in background).
         void load_next_training_values(OutputLayer* );
 
         // loads the test data to the nodes
