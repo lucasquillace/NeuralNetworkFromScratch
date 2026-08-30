@@ -21,10 +21,9 @@ class Layer{
         static float activation_function(float);
 
     public:
-        //quantità di nodi nel layer
+        //quantity of nodes in the layer
         Layer(int nodes_number): nodes(nodes_number, Node(rand() % RAND_V, rand() % RAND_B)) {}
 
-        // trova i valori del layer basandosi sul layer precedente. In caso di Input Layer, prende i valori dal dataset
         virtual void update_node_values(std::vector<float> ) = 0;
 
         static std::unique_ptr<Matrix> matrixMultiplication(Matrix* , Matrix*);

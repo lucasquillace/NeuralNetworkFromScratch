@@ -58,7 +58,6 @@ void Network::feed_forward(){
             next_nodes_values.push_back(next_node_matrix->getValue(i));
         }
 
-        // va immplementatoa
         layers[index]->update_node_values(std::move(next_nodes_values));
     }
 }

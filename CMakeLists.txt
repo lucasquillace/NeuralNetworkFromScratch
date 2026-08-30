@@ -21,3 +21,4 @@ set(SOURCES
 )
 
 add_executable(NeuralNet ${SOURCES})
+target_compile_definitions(NeuralNet PRIVATE PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}")
