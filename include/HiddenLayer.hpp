@@ -8,7 +8,7 @@ class HiddenLayer : public Layer{
 
     public:
         using Layer::Layer;
-        HiddenLayer(int nodes_number): Layer(nodes_number) {}
+        HiddenLayer(size_t nodes_number): Layer(nodes_number) {}
 
         void update_node_values(std::vector<float>) override;
 

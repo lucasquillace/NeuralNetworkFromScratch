@@ -20,9 +20,9 @@ class InputLayer : public Layer{
 
     private:
         // position of the last byte red. -1 when hit EOF, -2 when invalid
-        std::streampos byte_chunk_position;
-        std::vector<std::vector<float>> node_values_cached;
         uint8_t local_index;
+        std::streampos byte_chunk_position;
+        std::vector<std::vector<uint8_t>> node_values_cached;
 
         //read the content of nodes from the file located ad dataset/emnist-balanced-train.csv
         void read_from_file(OutputLayer* );
@@ -31,7 +31,7 @@ class InputLayer : public Layer{
 
     public:
         using Layer::Layer;
-        InputLayer(int nodes_number);
+        InputLayer(size_t nodes_number);
 
         // update the node values (from file only if the cached ones are finished)
         void update_node_values(std::vector<float> ) override;

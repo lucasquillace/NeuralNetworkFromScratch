@@ -12,28 +12,28 @@ Matrix::Matrix(std::vector<float> values){
 }
 
 // così da fare la matrice succ_layer_dim x prec_layer_dim
-int Matrix::convert_dimention(int row, int col, int n_cols){
+size_t Matrix::convert_dimention(size_t row, size_t col, size_t n_cols){
     return col + (row * n_cols);
 }
 
-int Matrix::getColQuantity() const{
+size_t Matrix::getColQuantity() const{
     return this->col_qtity;
 }
 
-int Matrix::getRowQuantity() const{
+size_t Matrix::getRowQuantity() const{
     return this->row_qtity;
 }
 
 void Matrix::clear(){
-    for (int i = 0; i< this->matrixValue.size(); i++){
+    for (size_t i = 0; i< this->matrixValue.size(); i++){
         this->matrixValue[i] = 0;
     }
 }
 
-float Matrix::getValue(int index) const{
+float Matrix::getValue(size_t index) const{
     return this->matrixValue[index];
 }
 
-void Matrix::putValue(int index, float value){
+void Matrix::putValue(size_t index, float value){
     this->matrixValue[index] = value;
 }

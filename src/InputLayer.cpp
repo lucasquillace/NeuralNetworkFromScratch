@@ -8,7 +8,7 @@
 #define TRAINING_DATA_FILENAME "dataset/emnist-balanced-train.csv"
 #define BATCH_SIZE 10
 
-InputLayer::InputLayer(int nodes_number) : Layer(nodes_number), local_index(0), byte_chunk_position(0){
+InputLayer::InputLayer(size_t nodes_number) : Layer(nodes_number), local_index(0), byte_chunk_position(0){
     this->node_values_cached.reserve(BATCH_SIZE);
 }
 
@@ -16,7 +16,7 @@ InputLayer::InputLayer(int nodes_number) : Layer(nodes_number), local_index(0), 
 void InputLayer::cache_values(const std::vector<std::string>& buffer, OutputLayer* output_layer){
     std::vector<float> expected_values;
     
-    for (int i = 0; i< buffer.size(); i++){
+    for (size_t i = 0; i< buffer.size(); i++){
         std::stringstream ss(buffer[i]);
         std::string value;
 
@@ -76,7 +76,6 @@ void InputLayer::read_from_file(OutputLayer* output_layer){
         this-> byte_chunk_position = file.tellg();
     }
 
-    // È da manipolare sti dati per capire effetticamente cosa vogliono dire e comunque il primo valore non deve andare nei nodi ma è quello atteso
 }
 
 // I guess it's good to maintain either load_... or update_... . Idk maybe it's used in 2 different scopes
@@ -110,12 +109,12 @@ void InputLayer::load_next_training_values(OutputLayer* output_layer){
 void InputLayer::update_node_values(std::vector<float> init_values){
     try{
         if (init_values.size() != this->nodes.size()) throw std::runtime_error("Incoherent dimension between nodes quantity ( " + std::to_string(this->nodes.size()) +" ) and values quantity ( " + std::to_string(init_values.size()) + " )");
-    }catch(std::runtime_error e){
+    }catch(const std::runtime_error& e){
         std::cout << e.what();
         exit(0);
     }
 
-    for(int i = 0; i < this->nodes.size(); i++){
+    for(size_t i = 0; i < this->nodes.size(); i++){
         this->nodes[i].setValue(init_values[i]);
     }
 }

@@ -13,7 +13,7 @@ std::vector<float> Layer::getNodeValues(){
     std::vector<float> values;
     values.reserve(this->nodes.size());
 
-    for (int i = 0; i < nodes.size(); i++){
+    for (size_t i = 0; i < nodes.size(); i++){
         values.push_back(this->nodes[i].getValue());
     }
 
@@ -24,7 +24,7 @@ std::vector<float> Layer::getNodeValues(){
 std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
     try{
         if (A->getColQuantity() != B->getRowQuantity()) throw std::runtime_error("Incoherent dimension-> First: " + std::to_string(A->getColQuantity()) + " ; second " + std::to_string(B->getRowQuantity()));
-    }catch(std::runtime_error e){
+    }catch(const std::runtime_error& e){
         std::cout << e.what();
         exit(0);
     }
@@ -35,9 +35,9 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
     // it should be good for speed
     C->clear();
 
-    for (int i = 0; i < A->getRowQuantity(); i++) {
-        for (int j = 0; j < B->getColQuantity(); j++) {
-            for (int k = 0; k < A->getColQuantity(); k++) {
+    for (size_t i = 0; i < A->getRowQuantity(); i++) {
+        for (size_t j = 0; j < B->getColQuantity(); j++) {
+            for (size_t k = 0; k < A->getColQuantity(); k++) {
                 float node_value =  
                     (A->getValue(Matrix::convert_dimention(i, k, A->getColQuantity())) + 
                     B->getValue(Matrix::convert_dimention(k , j , B->getColQuantity())));
@@ -48,7 +48,8 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
         }
     }
 
-    return std::move(C);
+    // Purpousely don't using std::move to use Named Return Value Optimization. It should be faster
+    return C;
 }
 
 float Layer::activation_function(float value){

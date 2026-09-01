@@ -5,8 +5,8 @@
 #include "Layer.hpp"
 
 /*
- * 47 Nodes
  * I use the index of InputLayer (*local_index_ptr) to maintain the same index in cached values
+ * The last layer has 47 nodes
 */
 class OutputLayer : public Layer{
 
@@ -18,7 +18,7 @@ class OutputLayer : public Layer{
         
     public:
         using Layer::Layer;
-        OutputLayer(int nodes_number): Layer(nodes_number) {}
+        OutputLayer(size_t nodes_number): Layer(nodes_number) {}
 
         void update_node_values(std::vector<float>) override;
 
@@ -29,8 +29,8 @@ class OutputLayer : public Layer{
 
         void clear_cached_values();
 
-        float getNodeValueByPosition(int) const;
-        float getExpectedNodeValueByPosition(int) const;
+        float getNodeValueByPosition(size_t) const;
+        float getExpectedNodeValueByPosition(size_t) const;
 
 };
 

@@ -19,10 +19,8 @@ class Network{
         float loss_function(float, float) const;
 
     public:
-        Network();
-        
         // per specificare il numero di layer, compreso quello di input ed i nodi necessari per layer
-        Network(int, std::vector<int>);
+        Network(size_t, std::vector<size_t>);
 
         // calculate the loss between the predicted values of the network and the expected ones
         float cost();
