@@ -17,6 +17,7 @@ set(SOURCES
     src/Node.cpp
     src/OutputLayer.cpp
     src/Matrix.cpp
+    src/PreActivationValueCache.cpp
     src/exs/main.cpp  
 )
 

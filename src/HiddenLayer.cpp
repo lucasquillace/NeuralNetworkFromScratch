@@ -12,6 +12,7 @@ void HiddenLayer::update_node_values(std::vector<float> new_values){
     }
 
     for (size_t i = 0; i< this->nodes.size(); i++){
-        this->nodes[i].setValue(new_values[i]);
+        this->pre_activation_nodes[i].setValue(new_values[i]);
+        this->nodes[i].setValue( Layer::activation_function(new_values[i]));
     }
 }

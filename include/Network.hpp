@@ -7,7 +7,9 @@
 class Layer;
 class Matrix;
 /*
- * Class that encapsule all the network
+ * Class that encapsule all the network. 
+ * In the backprop() the function maeks a strong assumption: 
+ * THE NETWORK IS USING SIGMOID + BCE, otherwise the function itself doesn't work properly
 */
 class Network{
     private:
@@ -27,6 +29,9 @@ class Network{
 
         // feed forward pass
         void feed_forward();
+
+        // backprop pass
+        void backprop();
 };
 
 #endif

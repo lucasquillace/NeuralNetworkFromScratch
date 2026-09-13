@@ -67,6 +67,42 @@ float Network::cost(){
     return ( -(total_cost / outputLayer->getNodes().size()));
 }
 
+void Network::backprop(){
+    for(size_t i = 0; i< layers.size(); i++){
+        size_t backprop_index = layers.size() - i -1;
+
+        // output layer, first pass
+        if (i == 0){
+            
+            //
+            // because the derivative of sigmoid is predicted( 1 -predicted) and
+            // because the dericative of binary cross entropy is {predicted - expected}/{predicted(1 - predicted)} 
+            // and because we have to compute the product of the 2 derivatives, it's possible to only
+            // do the {predicted- expected} part, knowing that the other terms cancel out
+            //
+            
+            Layer* last_layer = this->layers[this->layers.size() -1].get();
+            OutputLayer* output_layer = dynamic_cast<OutputLayer*>(last_layer);
+            std::vector<float> predicted_values = output_layer->getPredictedValues();
+            std::vector<float> expected_values = output_layer->getExpectedValues();
+            
+            std::vector<float> delta;
+            delta.reserve(output_layer->getNodes().size());
+
+
+            for (size_t j = 0; j< output_layer->getNodes().size(); j ++){
+                delta.push_back()
+            }
+
+        }
+
+        // hidden layers
+        else{
+
+        }
+    }
+}
+
 float Network::loss_function(float expected, float predicted) const{
     return (expected* log (predicted) + ((1 - expected) * log (1 - predicted)));
 }

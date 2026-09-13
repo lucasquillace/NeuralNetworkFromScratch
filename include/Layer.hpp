@@ -22,7 +22,7 @@ class Layer{
 
     public:
         //quantity of nodes in the layer
-        Layer(size_t nodes_number): nodes(nodes_number, Node(rand() % RAND_V, rand() % RAND_B)) {}
+        Layer(size_t nodes_number): nodes(nodes_number, Node(Layer::activation_function(rand() % RAND_V) , rand() % RAND_B)) {}
 
         virtual void update_node_values(std::vector<float> ) = 0;
 

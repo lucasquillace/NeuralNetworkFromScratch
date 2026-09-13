@@ -12,7 +12,8 @@ void OutputLayer::update_node_values(std::vector<float> new_values){
     }
 
     for (size_t i = 0; i< this->nodes.size(); i++){
-        this->nodes[i].setValue(new_values[i]);
+        this->nodes[i].setValue( Layer::activation_function(new_values[i]));
+        this->pre_activation_nodes[i].setValue(new_values[i]);
     }
 }
 
@@ -38,4 +39,18 @@ float OutputLayer::getExpectedNodeValueByPosition(size_t pos) const{
 
 float OutputLayer::getNodeValueByPosition(size_t pos) const{
     return (this->nodes[pos]).getValue();
+}
+
+std::vector<float> OutputLayer::getExpectedValues() const{
+    return this->expected_values[*local_index_ptr];
+}
+
+std::vector<float> OutputLayer::getPredictedValues() const{
+    std::vector<float> v;
+    v.reserve(this->nodes.size());
+    for(size_t in = 0; in < this->nodes.size(); in++){
+        v.push_back(this->nodes[in].getValue());
+    }
+
+    return v;
 }

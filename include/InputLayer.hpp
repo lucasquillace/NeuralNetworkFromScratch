@@ -22,7 +22,7 @@ class InputLayer : public Layer{
         // position of the last byte red. -1 when hit EOF, -2 when invalid
         uint8_t local_index;
         std::streampos byte_chunk_position;
-        std::vector<std::vector<uint8_t>> node_values_cached;
+        std::vector<std::vector<float>> node_values_cached;
 
         //read the content of nodes from the file located ad dataset/emnist-balanced-train.csv
         void read_from_file(OutputLayer* );

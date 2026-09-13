@@ -3,12 +3,13 @@
 
 #include <vector>
 #include "Layer.hpp"
+#include "PreActivationValueCache.hpp"
 
 /*
  * I use the index of InputLayer (*local_index_ptr) to maintain the same index in cached values
  * The last layer has 47 nodes
 */
-class OutputLayer : public Layer{
+class OutputLayer : public Layer, public PreActivationValueCache{
 
     private:
         std::vector<std::vector<float>> expected_values;
@@ -18,7 +19,9 @@ class OutputLayer : public Layer{
         
     public:
         using Layer::Layer;
-        OutputLayer(size_t nodes_number): Layer(nodes_number) {}
+        using PreActivationValueCache::PreActivationValueCache;
+
+        OutputLayer(size_t nodes_number): Layer(nodes_number) , PreActivationValueCache(nodes_number) {}
 
         void update_node_values(std::vector<float>) override;
 
@@ -32,6 +35,9 @@ class OutputLayer : public Layer{
         float getNodeValueByPosition(size_t) const;
         float getExpectedNodeValueByPosition(size_t) const;
 
+        // I hope I won't mess and confuse myself with this one
+        std::vector<float> getExpectedValues() const;
+        std::vector<float> getPredictedValues() const;
 };
 
 #endif

@@ -53,6 +53,6 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
 }
 
 float Layer::activation_function(float value){
-    // sigmoide by default
+    // sigmoid by default
     return 1/(1+ exp(-value));
 }
