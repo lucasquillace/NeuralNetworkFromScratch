@@ -19,6 +19,7 @@ class Layer{
         std::vector<Node> nodes;
 
         static float activation_function(float);
+        static float derivative_activation_function(float);
 
     public:
         //quantity of nodes in the layer

@@ -20,6 +20,9 @@ class Network{
 
         float loss_function(float, float) const;
 
+        // maybe some parameters aren't necessary
+        void gradient_descent(size_t, Matrix*, Matrix*);
+
     public:
         // per specificare il numero di layer, compreso quello di input ed i nodi necessari per layer
         Network(size_t, std::vector<size_t>);

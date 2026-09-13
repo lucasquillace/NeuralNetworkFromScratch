@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <vector>
+#include <memory>
 
 #include "Matrix.hpp"
 
@@ -36,4 +37,8 @@ float Matrix::getValue(size_t index) const{
 
 void Matrix::putValue(size_t index, float value){
     this->matrixValue[index] = value;
+}
+
+Matrix Matrix::transpose(){
+    return Matrix(this->col_qtity, this->row_qtity, this->matrixValue);
 }

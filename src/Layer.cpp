@@ -42,7 +42,7 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
                     (A->getValue(Matrix::convert_dimention(i, k, A->getColQuantity())) + 
                     B->getValue(Matrix::convert_dimention(k , j , B->getColQuantity())));
 
-                C->putValue(Matrix::convert_dimention(i, j, C->getColQuantity()), activation_function(node_value));
+                C->putValue(Matrix::convert_dimention(i, j, C->getColQuantity()), node_value);
 
             }
         }
@@ -55,4 +55,8 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
 float Layer::activation_function(float value){
     // sigmoid by default
     return 1/(1+ exp(-value));
+}
+
+float Layer::derivative_activation_function(float value){
+    return value * (1.0 - value);
 }

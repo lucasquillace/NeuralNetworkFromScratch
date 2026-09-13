@@ -91,16 +91,32 @@ void Network::backprop(){
 
 
             for (size_t j = 0; j< output_layer->getNodes().size(); j ++){
-                delta.push_back()
+                delta.push_back(predicted_values[i] - expected_values[i]);
             }
+            
+            // the gradient of weight matrix at [l] is the matrix multiplication between the previous layer activation and the delta
+            Matrix prev_weight_matrix_transposted(this->layers[this->layers.size()-2].get()->getNodeValues());
+            Matrix delta_matrix(delta.size(), 1, delta);
 
+            std::unique_ptr<Matrix> grad_weight_matrix = Layer::matrixMultiplication(&prev_weight_matrix_transposted, &delta_matrix);
+
+            this->gradient_descent(backprop_index, grad_weight_matrix.get(), &delta_matrix);
         }
 
         // hidden layers
         else{
 
+            // actually, these are the weights between layer (in -1) and layer (in).
+            // For example, in the last hidden layer, these are the weights that connects the last hidden layer to the output layer
+            Matrix current_weights_transposted = this->weights[backprop_index +1]->transpose();
+            
+            
         }
     }
+}
+
+void Network::gradient_descent(size_t layer_index, Matrix* gradient_weights, Matrix* gradient_bias){
+
 }
 
 float Network::loss_function(float expected, float predicted) const{
