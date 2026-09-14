@@ -31,6 +31,10 @@ void Matrix::clear(){
     }
 }
 
+void Matrix::reserve(size_t new_size){
+    this->matrixValue.reserve(new_size);
+}
+
 float Matrix::getValue(size_t index) const{
     return this->matrixValue[index];
 }

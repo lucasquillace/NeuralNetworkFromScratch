@@ -68,6 +68,9 @@ float Network::cost(){
 }
 
 void Network::backprop(){
+    
+    // because I have to use this at each iteration (and with different dimensions), declaring it here is the best choice
+    std::vector<float> delta;
     for(size_t i = 0; i< layers.size(); i++){
         size_t backprop_index = layers.size() - i -1;
 
@@ -86,7 +89,6 @@ void Network::backprop(){
             std::vector<float> predicted_values = output_layer->getPredictedValues();
             std::vector<float> expected_values = output_layer->getExpectedValues();
             
-            std::vector<float> delta;
             delta.reserve(output_layer->getNodes().size());
 
 
@@ -110,7 +112,38 @@ void Network::backprop(){
             // For example, in the last hidden layer, these are the weights that connects the last hidden layer to the output layer
             Matrix current_weights_transposted = this->weights[backprop_index +1]->transpose();
             
+            // that's the derivative of the activation function with respect to the values of the node
+            Layer* layer = this->layers[backprop_index].get();
+            HiddenLayer* hidden_layer = dynamic_cast<HiddenLayer*>(layer);
+            std::vector<float> derivative_pre_activation = Layer::derivative_activation_function(hidden_layer->getPreActivationNodesValues());
             
+            Matrix delta_matrix(1, delta.size(), delta);
+
+            // delta is 1xi(th)_weights_values matrix and current_weights_transposted is i(th)_weight_values x i-1(th)_weight_values
+            std::unique_ptr<Matrix> error_derivative = Layer::matrixMultiplication(&delta_matrix, &current_weights_transposted);
+
+            Matrix derivative_pre_activation_matrix( 1 ,derivative_pre_activation.size(), derivative_pre_activation);
+
+            // error_derivative is 1x i-1 (th)_weights_values and so is derivative_pre_activation_matrix
+            // and delta_hadamard_p
+            std::unique_ptr<Matrix> delta_hadamard_p = Layer::hadamardMultiplication(error_derivative.get(), &derivative_pre_activation_matrix);
+            
+            // even tho I create a new matrix on each iteration, I have to macke sure to update the delta values (the vector<float>)
+            delta.clear();
+            size_t new_size = delta_hadamard_p->getColQuantity() * delta_hadamard_p->getRowQuantity();
+            delta.reserve(new_size);
+
+            for (size_t i = 0; i< new_size; i++){
+                delta.push_back(delta_hadamard_p->getValue(i));
+            }
+
+            std::vector<float> post_activation_values = hidden_layer->getNodeValues();
+            Matrix post_activation_values_matrix(post_activation_values.size() , 1, post_activation_values);
+
+            // i'm not really sure on these dimensions
+            std::unique_ptr<Matrix> weights_gradient = Layer::matrixMultiplication(&post_activation_values_matrix, delta_hadamard_p.get());
+
+            this->gradient_descent(backprop_index, weights_gradient.get(), delta_hadamard_p.get());
         }
     }
 }

@@ -18,7 +18,7 @@ class Matrix{
 
 
     public:
-        Matrix(size_t succ_layer_dim, size_t prec_layer_dim): matrixValue(succ_layer_dim*prec_layer_dim, rand()% RAND_M), row_qtity(prec_layer_dim) , col_qtity(succ_layer_dim) {}
+        Matrix(size_t succ_layer_dim, size_t prec_layer_dim): matrixValue(succ_layer_dim*prec_layer_dim, 0), row_qtity(prec_layer_dim) , col_qtity(succ_layer_dim) {}
         Matrix(size_t row_qtity, size_t col_qtity, std::vector<float>& init_values): row_qtity(row_qtity), col_qtity(col_qtity), matrixValue(init_values) {}
         
         // initialize an array of dimention 1xvalues.size() on the fly
@@ -34,7 +34,9 @@ class Matrix{
 
         // empties the matrix. Gurantees no reallocation
         void clear();
-
+        // asks for an explicit resize in capacity.
+        void reserve(size_t);
+        void push_back(float v){this->matrixValue.push_back(v);}
 
         // converts from 2d coordinates to array coordinates. 
         static size_t convert_dimention(size_t row_number, size_t col_number, size_t col_quantity);

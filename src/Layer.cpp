@@ -23,7 +23,7 @@ std::vector<float> Layer::getNodeValues(){
 // does A x B
 std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
     try{
-        if (A->getColQuantity() != B->getRowQuantity()) throw std::runtime_error("Incoherent dimension-> First: " + std::to_string(A->getColQuantity()) + " ; second " + std::to_string(B->getRowQuantity()));
+        if (A->getColQuantity() != B->getRowQuantity()) throw std::runtime_error("Incoherent dimension for matrix multiplication.\n -> First: " + std::to_string(A->getColQuantity()) + " ; second " + std::to_string(B->getRowQuantity()));
     }catch(const std::runtime_error& e){
         std::cout << e.what();
         exit(0);
@@ -31,9 +31,6 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
 
     // C's dimension will be """"A->size() x B[0]->size()""""
     std::unique_ptr<Matrix> C = std::make_unique<Matrix>(A->getRowQuantity(), B->getColQuantity());
-
-    // it should be good for speed
-    C->clear();
 
     for (size_t i = 0; i < A->getRowQuantity(); i++) {
         for (size_t j = 0; j < B->getColQuantity(); j++) {
@@ -52,11 +49,48 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
     return C;
 }
 
+// does A x B but in hadamard way (not 'dot product' but element-wise)
+std::unique_ptr<Matrix> Layer::hadamardMultiplication(Matrix* A, Matrix* B){
+    try{
+        if ((A->getColQuantity() != B->getColQuantity()) || (A->getRowQuantity() != B-> getRowQuantity())) throw std::runtime_error("Incoherent dimension for hadamard multiplication.\n -> First dimension: (" + std::to_string(A->getRowQuantity()) + "x" + std::to_string(A->getColQuantity()) + "). \n  -> Second dimension: (" + std::to_string(B->getRowQuantity()) + "x" + std::to_string(B->getColQuantity()) + ").");
+    }catch(const std::runtime_error& e){
+        std::cout << e.what();
+        exit(0);
+    }
+
+    std::unique_ptr<Matrix> C = std::make_unique<Matrix>(A->getRowQuantity(), A->getColQuantity());
+    size_t c_size = A->getColQuantity() * A->getRowQuantity();
+    
+    for (size_t i = 0; i< c_size; i++){
+        C->putValue(i, (A->getValue(i) * B->getValue(i)));
+    }
+
+    return C;
+}
+
 float Layer::activation_function(float value){
     // sigmoid by default
     return 1/(1+ exp(-value));
 }
 
+std::vector<float> Layer::activation_function(const std::vector<float>& values){
+    std::vector<float> new_values;
+    new_values.reserve(values.size());
+    for (size_t i = 0; i< values.size(); i++){
+        new_values.push_back(Layer::activation_function(values[i]));
+    }
+    return new_values;
+}
+
 float Layer::derivative_activation_function(float value){
     return value * (1.0 - value);
+}
+
+std::vector<float> Layer::derivative_activation_function(const std::vector<float>& values){
+    std::vector<float> new_values;
+    new_values.reserve(values.size());
+    for (size_t i = 0; i< values.size(); i++){
+        new_values.push_back(Layer::derivative_activation_function(values[i]));
+    }
+    return new_values;
 }

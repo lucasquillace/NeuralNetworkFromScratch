@@ -18,8 +18,6 @@ class Layer{
     protected:
         std::vector<Node> nodes;
 
-        static float activation_function(float);
-        static float derivative_activation_function(float);
 
     public:
         //quantity of nodes in the layer
@@ -28,9 +26,16 @@ class Layer{
         virtual void update_node_values(std::vector<float> ) = 0;
 
         static std::unique_ptr<Matrix> matrixMultiplication(Matrix* , Matrix*);
+        static std::unique_ptr<Matrix> hadamardMultiplication(Matrix*, Matrix*);
 
         std::vector<Node>& getNodes() {return nodes;}
         std::vector<float> getNodeValues();
+
+
+        static float activation_function(float);
+        static std::vector<float> activation_function(const std::vector<float>&);
+        static float derivative_activation_function(float);
+        static std::vector<float> derivative_activation_function(const std::vector<float>&);
 };
 
 
