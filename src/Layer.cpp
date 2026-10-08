@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
-#include <bits/stdc++.h>
+#include <cmath>
 
 #include "Layer.hpp"
 #include "Node.hpp"
@@ -34,14 +34,14 @@ std::unique_ptr<Matrix> Layer::matrixMultiplication(Matrix* A, Matrix* B){
 
     for (size_t i = 0; i < A->getRowQuantity(); i++) {
         for (size_t j = 0; j < B->getColQuantity(); j++) {
+            float node_value = 0;
             for (size_t k = 0; k < A->getColQuantity(); k++) {
-                float node_value =  
-                    (A->getValue(Matrix::convert_dimention(i, k, A->getColQuantity())) + 
+                node_value +=  
+                    (A->getValue(Matrix::convert_dimention(i, k, A->getColQuantity())) * 
                     B->getValue(Matrix::convert_dimention(k , j , B->getColQuantity())));
 
-                C->putValue(Matrix::convert_dimention(i, j, C->getColQuantity()), node_value);
-
             }
+            C->putValue(Matrix::convert_dimention(i, j, C->getColQuantity()), node_value);
         }
     }
 

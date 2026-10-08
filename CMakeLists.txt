@@ -22,4 +22,11 @@ set(SOURCES
 )
 
 add_executable(NeuralNet ${SOURCES})
+add_executable(TestMatrix
+    test/test_matrix.cpp
+    src/Layer.cpp
+    src/Matrix.cpp
+    src/Node.cpp
+)
+
 target_compile_definitions(NeuralNet PRIVATE PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}")
