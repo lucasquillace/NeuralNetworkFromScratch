@@ -7,7 +7,7 @@
 #include "Matrix.hpp"
 
 
-void testMultiplicationCorrectness(){
+void test_multiplication_correctness(){
     std::vector<float> a_value = {3.0, 5.0, 6.0, 5.0, 7.0, 9.0};
     std::vector<float> b_value = {3.0, 8.0, 4.0, 4.0, 3.0, 5.0};
 
@@ -27,6 +27,27 @@ void testMultiplicationCorrectness(){
 
 }
 
+void test_timing() {
+    size_t N = 1000;
+
+    std::vector<float> a_values(N*N), b_values(N*N);
+    for (auto& v : a_values) v = rand() % 10;
+    for (auto& v : b_values) v = rand() % 10;
+
+    Matrix A(N, N, a_values);
+    Matrix B(N, N, b_values);
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::unique_ptr<Matrix> C = Layer::matrixMultiplication(&A, &B);
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "NxN = " << N << "took: " << duration.count() << "ms\n";
+}
+
 int main(){
-    testMultiplicationCorrectness();
+    test_multiplication_correctness();
+    test_timing();
 }
