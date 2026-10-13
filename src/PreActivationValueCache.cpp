@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "PreActivationValueCache.hpp"
 
 std::vector<float> PreActivationValueCache::getPreActivationNodesValues(){
