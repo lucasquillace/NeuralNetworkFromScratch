@@ -26,11 +26,11 @@ Network::Network(size_t layer_number, std::vector<size_t> node_number){
     for (size_t i = 1; i < layer_number -1; i++){
         this->layers.push_back(std::make_unique<HiddenLayer>(node_number[i]));
 
-        this->weights.push_back(std::make_unique<Matrix>(i, i-1));
+        this->weights.push_back(std::make_unique<Matrix>(node_number[i], node_number[i-1]));
     }
     this->layers.push_back(std::make_unique<OutputLayer>(node_number[layer_number -1]));
 
-    this->weights.push_back(std::make_unique<Matrix>(layer_number, layer_number -1));
+    this->weights.push_back(std::make_unique<Matrix>(node_number[layer_number],node_number[layer_number -1]));
     
 }
 
