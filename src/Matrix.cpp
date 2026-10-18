@@ -31,6 +31,12 @@ void Matrix::clear(){
     }
 }
 
+void Matrix::randomize(){
+    for (size_t i = 0; i< this->matrixValue.size(); i++){
+        this->matrixValue[i] = rand() % RAND_M;
+    }
+}
+
 void Matrix::reserve(size_t new_size){
     this->matrixValue.reserve(new_size);
 }

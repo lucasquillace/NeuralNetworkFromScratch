@@ -34,6 +34,8 @@ class Matrix{
 
         // empties the matrix. Gurantees no reallocation
         void clear();
+        // randomize the matrix values using RAND_M and not srand()
+        void randomize();
         // asks for an explicit resize in capacity.
         void reserve(size_t);
         void push_back(float v){this->matrixValue.push_back(v);}
