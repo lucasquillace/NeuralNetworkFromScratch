@@ -30,7 +30,7 @@ Network::Network(size_t layer_number, std::vector<size_t> node_number){
     }
     this->layers.push_back(std::make_unique<OutputLayer>(node_number[layer_number -1]));
 
-    this->weights.push_back(std::make_unique<Matrix>(node_number[layer_number],node_number[layer_number -1]));
+    this->weights.push_back(std::make_unique<Matrix>(node_number[layer_number-1],node_number[layer_number -2]));
     
 }
 
