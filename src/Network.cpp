@@ -26,11 +26,13 @@ Network::Network(size_t layer_number, std::vector<size_t> node_number){
     for (size_t i = 1; i < layer_number -1; i++){
         this->layers.push_back(std::make_unique<HiddenLayer>(node_number[i]));
 
-        this->weights.push_back(std::make_unique<Matrix>(i, i-1));
+        this->weights.push_back(std::make_unique<Matrix>(node_number[i], node_number[i-1]));
+        this->weights.back()->randomize();
     }
     this->layers.push_back(std::make_unique<OutputLayer>(node_number[layer_number -1]));
 
-    this->weights.push_back(std::make_unique<Matrix>(layer_number, layer_number -1));
+    this->weights.push_back(std::make_unique<Matrix>(node_number[layer_number-1],node_number[layer_number -2]));
+    this->weights.back()->randomize();
     
 }
 
@@ -38,7 +40,7 @@ Network::Network(size_t layer_number, std::vector<size_t> node_number){
 void Network::feed_forward(){
     for (size_t index = 1; index < layers.size(); index++){
         std::unique_ptr<Matrix> previous_node_matrix = std::make_unique<Matrix>((this->layers[index-1].get())->getNodeValues());
-        std::unique_ptr<Matrix> next_node_matrix = Layer::matrixMultiplication(previous_node_matrix.get(), this->weights[index].get());
+        std::unique_ptr<Matrix> next_node_matrix = Layer::matrixMultiplication(previous_node_matrix.get(), this->weights[index-1].get());
         
         std::vector<float> next_nodes_values;
 
@@ -58,7 +60,7 @@ float Network::cost(){
     OutputLayer* outputLayer = dynamic_cast<OutputLayer*>(last_layer);
     float total_cost = 0;
     
-    for(size_t i = 0; outputLayer->getNodes().size() ; i++){
+    for(size_t i = 0; i<outputLayer->getNodes().size() ; i++){
         float predicted = outputLayer->getNodeValueByPosition(i);
         float expected = outputLayer->getExpectedNodeValueByPosition(i);
         total_cost += loss_function(expected, predicted);
@@ -93,7 +95,7 @@ void Network::backprop(){
 
 
             for (size_t j = 0; j< output_layer->getNodes().size(); j ++){
-                delta.push_back(predicted_values[i] - expected_values[i]);
+                delta.push_back(predicted_values[j] - expected_values[j]);
             }
             
             // the gradient of weight matrix at [l] is the matrix multiplication between the previous layer activation and the delta
