@@ -15,8 +15,7 @@ class Node{
         void setValue(float v) {this->value = v;};
         void setBias(float b) {this->bias = b;};
 
-        Node(float v, float b): value(v), bias(b) { }
-        Node();
+        Node(float v, float b): value(v), bias(b) { }   
 };
 
 #endif
