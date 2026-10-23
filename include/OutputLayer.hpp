@@ -2,6 +2,7 @@
 #define OUTPUT_LAYER_HPP
 
 #include <vector>
+#include <cstdint>
 #include "Layer.hpp"
 #include "PreActivationValueCache.hpp"
 
@@ -16,7 +17,7 @@ class OutputLayer : public Layer, public PreActivationValueCache{
 
         // this pointer holds the value of the index in InputLayer's cache
         uint8_t* local_index_ptr;
-        
+
     public:
         using Layer::Layer;
         using PreActivationValueCache::PreActivationValueCache;

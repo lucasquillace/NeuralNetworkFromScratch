@@ -2,6 +2,7 @@
 #define INPUT_LAYER_HPP
 
 #include <vector>
+#include <cstdint>
 #include <fstream>
 
 #include "Layer.hpp"
@@ -13,7 +14,7 @@
  * byte_chunk_position is the first byte to read in a file scan.
  * node_values_cached are the node values scanned previously from the file. This changes on each scan.
  * local_index is the index of the last values given to the network
- * 
+ *
  * The first layer has 784 nodes
 */
 class InputLayer : public Layer{
